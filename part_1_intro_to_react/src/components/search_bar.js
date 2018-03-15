@@ -26,8 +26,8 @@ class SearchBar extends Component {
             using {} to display value like NG uses {{}} , using this.state.term to display and NEVER to manipulate value
         */
         return (
-            <div>
-                <input onChange={event => this.setState({term: event.target.value})}/>
+            <div className="search-bar">
+                <input onChange={event => this.onInputChange(event.target.value)}/>
                 {/*Value of the input : {this.state.term}*/}
             </div>
         )
@@ -36,8 +36,9 @@ class SearchBar extends Component {
     /* video 16
         bind it to onChange. onChange= {this.onInputChange}
      */
-    onInputChange(event) {
-        console.log(event.target.value);
+    onInputChange(term) {
+        this.setState({term});
+        this.props.onSearchTermChange(term);
     }
 }
 

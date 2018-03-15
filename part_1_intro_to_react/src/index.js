@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
+import _ from 'lodash';
 import ReactDom from 'react-dom';
 import YTSearch from 'youtube-api-search';
 import VideoList from './components/video_list';
 import SearchBar from './components/search_bar';
+import VideoDetails from './components/video_detail';
 
 const API_KEY = 'AIzaSyCnkW0BzfddubGwIv_raeCNw-LcepmidQE';
 //video 9 : 00:49
@@ -22,19 +24,34 @@ const API_KEY = 'AIzaSyCnkW0BzfddubGwIv_raeCNw-LcepmidQE';
 class App extends Component {
     constructor(props) {
         super(props);
-        this.state = {videos: []};
-        YTSearch({key: API_KEY, term: 'surfboards'}, (videos) => {
-            this.setState({videos});
+        this.state = {
+            videos: [],
+            selectedVideo: null // video 29 - added another state object for a single video
+        };
+        this.videoSearch('surfboards');
+    }
+
+    videoSearch(term){
+        YTSearch({key: API_KEY, term: term}, (videos) => {
+            this.setState({videos: videos, selectedVideo: videos[0]});
             //video 22 - using es6 thing, videos in (videos) is the same as setState({videos:videos})
         });
-
     }
 
     render() {
+        //video 32 using lodash lib
+        const videoSearch = _.debounce((term)=>{this.videoSearch(term)},300);
         return (
             <div>
-                <SearchBar/>
-                <VideoList videos={this.state.videos}/> {/* video 23- passing value from parent to child use like NG*/}
+                <SearchBar onSearchTermChange={videoSearch}/>
+                {/* video 28 it will run into error becuase locally loads faster than reaching out youtube API*/}
+                {/*video 29 and we use selectedVideo prop from state here */}
+                <VideoDetails video={this.state.selectedVideo}/>
+                {/*video 29, pass onVideoSelect with function call in it to VideoList then VideoList passes to VideoListItem. In VideoListItem, it gets executed with onClick() with individual video in it. Once onClick() executed, it will setState back to App.js here */}
+                <VideoList
+                    onVideoSelect={selectedVideo => this.setState({selectedVideo})}
+                    videos={this.state.videos}/>
+                {/* video 23- passing value from parent to child use like NG*/}
             </div>// = JSX becuase HTML found in JS
         );
     }

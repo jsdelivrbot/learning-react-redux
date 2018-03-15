@@ -3,7 +3,10 @@ import VideoListItem from './video_list_item';
 //video 23 - from index.js VideoList videos= this.state.videos, it passes as a param
 const VideoList = (props) => {
     const videoItems = props.videos.map((video) => {
-        return <VideoListItem key={video.etag} video={video}/>
+        return (<VideoListItem
+                key={video.etag} video={video}
+                onVideoSelect={props.onVideoSelect}
+                />);
     });
 
     return (
