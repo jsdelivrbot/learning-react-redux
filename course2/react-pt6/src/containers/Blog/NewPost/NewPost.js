@@ -12,6 +12,7 @@ class NewPost extends Component {
     };
 
     componentDidMount(){
+        //or guard here if state of auth is false then this.props.history.reaplce('/posts');
         console.log(this.props);
     }
 
@@ -24,7 +25,8 @@ class NewPost extends Component {
         axios.post('/posts', post)
             .then((response)=>{
               console.log(response);
-              this.setState({submitted:true});
+              //this.setState({submitted:true});
+                this.props.history.push('/posts');
             })
     };
 
