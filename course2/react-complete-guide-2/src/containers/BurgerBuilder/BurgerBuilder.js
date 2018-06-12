@@ -29,7 +29,7 @@ class BurgerBuilder extends Component {
         purchasable: false,
         purchasing: false,
         loading: false,
-        error:false
+        error: false
     };
 
     componentDidMount() {
@@ -38,7 +38,7 @@ class BurgerBuilder extends Component {
                 this.setState({ingredients: data.data})
             })
             .catch((err) => {
-                this.setState({error:true});
+                this.setState({error: true});
             })
     }
 
@@ -92,31 +92,19 @@ class BurgerBuilder extends Component {
     };
 
     purchaseContinueHandler = () => {
-        this.setState({loading: true});
-        //alert('Continue');
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer: {
-                name: 'Tc',
-                address: {
-                    street: '123 test str',
-                    zipCode: '1234',
-                    country: 'Germany'
-                },
-                email: 'test@test.com'
-            },
-            deliveryMethod: 'fastest'
-        };
-        axios.post('/orders.json', order)
-            .then((data) => {
-                this.setState({loading: false, purchasing: false});
-                console.log(data);
-            })
-            .catch((err) => {
-                this.setState({loading: false, purchasing: false});
-                console.log(err);
-            });
+
+        const queryParams = [];
+        for (let i in this.state.ingredients) {
+            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
+        }
+        queryParams.push('price=' + this.state.totalPrice);
+        const queryString = queryParams.join('&');
+        console.log(queryString);
+        console.log(this.props);
+        this.props.history.push({
+            pathname: '/checkout',
+            search: '?' + queryString
+        });
     };
 
     render() {
@@ -127,7 +115,7 @@ class BurgerBuilder extends Component {
             disabledInfo[key] = disabledInfo[key] <= 0
         }
         let orderSummary = null;
-        let burger = this.state.error? <p>Ingredients can't be loaded</p>: <Spinner/>;
+        let burger = this.state.error ? <p>Ingredients can't be loaded</p> : <Spinner/>;
         if (this.state.ingredients != null) {
             burger = (
                 <Aux>
