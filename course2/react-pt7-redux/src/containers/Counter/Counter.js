@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import CounterControl from '../../components/CounterControl/CounterControl';
 import CounterOutput from '../../components/CounterOutput/CounterOutput';
 import {connect} from 'react-redux';
-import * as actionTypes from '../../store/action';
+import * as actionCreator from '../../store/actions/action';
+
 class Counter extends Component {
     state = {
         counter: 0
@@ -55,13 +56,13 @@ const mapStateToProps = (state) =>{
 
 const mapDispatchToProps = dispatch =>{
     return{
-        onIncrementCounter:()=> dispatch({type:actionTypes.INCREMENT}),
-        onDecrementCounter:()=> dispatch({type:actionTypes.DECREMENT}),
-        onAddCounter:()=> dispatch({type:actionTypes.ADD, val:10}),
-        onSubtractCounter:()=> dispatch({type:actionTypes.SUBTRACT, val:15}),
-        onStoreResult:(result)=> dispatch({type:actionTypes.STORE, result:result}),
+        onIncrementCounter:()=> dispatch(actionCreator.increment()),
+        onDecrementCounter:()=> dispatch(actionCreator.decrement()),
+        onAddCounter:()=> dispatch(actionCreator.add(10)),
+        onSubtractCounter:()=> dispatch(actionCreator.subtract(15)),
+        onStoreResult:(result)=> dispatch(actionCreator.storeResult(result)),
         //now to store the counter, it has to pass as a payload from global state "props.ctr"
-        onDeleteResult:(selectedId)=> dispatch({type:actionTypes.REMOVE, id:selectedId})
+        onDeleteResult:(selectedId)=> dispatch(actionCreator.deleteResult(selectedId))
     }
 }
 
