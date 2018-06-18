@@ -4,7 +4,7 @@ import {reducer as formReducer} from 'redux-form';
 
 const rootReducer = combineReducers({
     posts: postReducer,
-    forms:formReducer
+    form:formReducer //this 'form' key has to be FORM not FORMS
 });
 
 export default rootReducer;

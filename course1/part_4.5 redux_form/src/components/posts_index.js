@@ -1,26 +1,29 @@
-import React,{Component} from 'react';
+import React, {Component} from 'react';
 import _ from 'lodash';
 import {connect} from 'react-redux';
 import {fetchPosts} from "../actions/index";
 import {Link} from 'react-router-dom';
-class PostsIndex extends Component{
 
-    componentDidMount(){
+class PostsIndex extends Component {
+
+    componentDidMount() {
         this.props.fetchPosts();
     }
 
-    renderPosts(){
-        return _.map(this.props.posts, post=>{
-           return(
-               <li className="list-group-item" key={post.id}>
-                   {post.title}
-               </li>
-           )
+    renderPosts() {
+        return _.map(this.props.posts, post => {
+            return (
+                <li className="list-group-item" key={post.id}>
+                    <Link to={`/posts/${post.id}`}>
+                        {post.title}
+                    </Link>
+                </li>
+            )
         });
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <div>
                 <div className="text-xs-right">
                     <Link className="btn btn-primary" to="/posts/new">
@@ -36,8 +39,8 @@ class PostsIndex extends Component{
     }
 }
 
-const mapStateToProps = (state)=>{
-    return{
+const mapStateToProps = (state) => {
+    return {
         posts: state.posts
     }
 }
