@@ -1,0 +1,48 @@
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
+...some ul in render()
+..
+..
+const transitionOptions={
+    transitionName:'fade',
+    transitionEnterTimeout:500,
+    transitionLeaveTimeout:500
+}
+return(
+    <ul>
+        <ReactCSSTransitionGroup {...transitionOptions}>
+            {this.renderQuotes()}
+        </ReactCSSTransitionGroup>
+    </ul>
+);
+
+
+in .css 
+----------------------
+-- start state
+.fade because the transitionName : 'fade' and -enter is a reserved word
+.fade-enter{
+    right:100px;
+    //other animations
+    // transform:rotateX(90deg) rotateZ(90deg);
+}
+
+-- end state
+-enter-active is also reserved word
+.fade-enter-active{
+    right:0px;
+    transition :.5 ease-in all;
+    //transform:rotateX(0deg) rotateZ(0deg);
+}
+
+
+-leave is a reserved
+.fade-leave{
+    right:0px;
+    
+}
+
+.fade-leave-active{
+    right:-100px;
+    transition:.5 ease-out all;
+}
