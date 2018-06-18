@@ -1,0 +1,53 @@
+using reselect library
+
+src/selectors/selected_posts.js
+--------------------------------
+//Reselect selector
+//takes a list of posts and postIds and picks out the selected posts
+import {createSelector} from 'reselect';
+
+//create select functions to pick off the pieces of state we care about
+const postsSelector = state=>state.posts
+const selectedPostsSelector = state=> state.selectedPostIds
+
+const getPosts = (posts, selectedPostIds) =>{
+    //using lodash
+    const selectedPosts = _.filter(
+        posts,
+        post => _.contains(selectedPostIds, post.id)
+    )
+    return selectedPosts;
+};
+
+export default createSelector(
+    postsSelector, //a piece of state
+    selectedPostsSelector, //another piece of state
+    getPosts //last args is the function that has our select logic
+);
+
+
+src/components/selected_posts_list.js
+---------------------------------------
+        .
+ some boilerplates...
+        .
+        .
+import SelectedPostSelector from 'selectors/selected_posts';
+        
+const SelectedPostList = (props)=>{
+    return(
+        <ul>
+            {
+                props.posts.map(post=>{
+                    return <li>{...post}</li>
+                })
+            }
+        </ul>
+    )
+}
+
+mapStateToProps(state){
+    return{
+    posts: SelectedPostsSelector(state) //the selector will get the calculated selector
+    }
+}
